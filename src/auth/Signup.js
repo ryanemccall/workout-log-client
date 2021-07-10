@@ -9,14 +9,15 @@ const Signup = (props) => {
         event.preventDefault();
         fetch("http://localhost:3000/user/register", {
             method: 'POST',
-            body: JSON.stringify({user:{username: username, password: password}}),
+            body: JSON.stringify({username: username, password: password}),
             headers: new Headers({
                 'Content-Type': 'application/json'
             })
         }) .then(
             (response) => response.json()
         ).then((data) => {
-            props.updateToken(data.sessionToken)
+            console.log(data)
+            props.updateToken(data.token)
         })
     }
     return(

@@ -11,15 +11,15 @@ const WorkoutIndex = (props) => {
     const [workoutToUpdate, setWorkoutToUpdate] = useState({});
 
     const fetchWorkouts = () => {
-        fetch('http://localhost:3000/log', {
+        fetch('http://localhost:3000/workout', {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',
-                'Authorization': props.token
+                'Authorization': `Bearer ${props.token}`
             })
         }) .then( (res) => res.json())
            .then((logData) => {
-               setWorkouts(logData)
+               setWorkouts(logData.entries)
            })
     }
 
@@ -46,8 +46,12 @@ const WorkoutIndex = (props) => {
                    <WorkoutCreate fetchWorkouts={fetchWorkouts} token={props.token}/>
                 </Col>
                 <Col md='9'>
-                   <WorkoutTable workouts={workouts} fetchWorkouts={fetchWorkouts} token={props.token}/>
+                   <WorkoutTable workouts={workouts}
+                   editUpdateWorkout={editUpdateWorkout}
+                   updateOn={updateOn} fetchWorkouts={fetchWorkouts} token={props.token}/>
                 </Col>
+                {updateActive ? <WorkoutEdit workoutToUpdate={workoutToUpdate}
+                updateOff={updateOff} token={props.token} fetchWorkouts={fetchWorkouts}/> : <></>}
             </Row>
         </Container>
     )

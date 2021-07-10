@@ -7,12 +7,12 @@ const WorkoutEdit = (props) => {
     const [editRes, setEditRes] = useState(props.workoutToUpdate.result);
     const workoutUpdate = (event, workout) => {
         event.preventDefault();
-        fetch(`http://localhost:3000/log/${props.workoutToUpdate.id}`, {
+        fetch(`http://localhost:3000/workout/${props.workoutToUpdate.id}`, {
             method: 'PUT',
-            body: JSON.stringify({log: {description: editDesc, definition: editDef, result: editRes}}),
+            body: JSON.stringify({workout: {description: editDesc, definition: editDef, result: editRes}}),
             headers: new Headers({
                 'Content-Type': 'application/json',
-                'Authorization': props.token
+                'Authorization': `Bearer ${props.token}`
             })
         }) .then((res) => {
             props.fetchWorkouts();
@@ -26,15 +26,23 @@ const WorkoutEdit = (props) => {
             <ModalBody>
                 <Form onSubmit={workoutUpdate}>
                     <FormGroup>
+                        <Label htmlFor='result'>Edit Result:</Label>
+                        <Input name='result' value={editRes} onChange={(e) => setEditRes(e.target.value)}/>
+                    </FormGroup>
+                    <FormGroup>
                         <Label htmlFor='description'>Edit Description:</Label>
-                        <Input name='description' value={editDef} onChange={(e) => setEditDef(e.target.value)}>
+                        <Input name='description' value={editDesc} onChange={(e) => setEditDesc(e.target.value)}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor='definition'>Edit Definiton:</Label>
+                        <Input type='select' name='definition' value={editDef} onChange={(e) => setEditDef(e.target.value)}>
                             <option></option>
                             <option value='Time'>Time</option>
                             <option value='Weight'>Weight</option>
                             <option value='Distance'>Distance</option>
                         </Input>
                     </FormGroup>
-                    <Button type='submit'>Update the workout!</Button>
+                    <Button type='submit'>Update the Workout!</Button>
                 </Form>
             </ModalBody>
         </Modal>
